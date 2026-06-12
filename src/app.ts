@@ -8,7 +8,7 @@ const app:Application = express();
 app.use (express.json())
 
 
-// Root Routing
+// Root Route
 
 app.get("/",(req:Request,res:Response)=>{
 
