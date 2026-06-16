@@ -10,7 +10,6 @@ export const userInitDB = async()=>{
             email VARCHAR(60) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
             role VARCHAR(20) DEFAULT 'user',
-            CHECK(role IN ('user','admin')),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`)
 

@@ -1,11 +1,18 @@
 import express, { type Application, type Request, type Response } from "express";
+import { userRouter } from "./module/user/user.route";
 
 const app:Application = express();
 
 
 // middleware
 
-app.use (express.json())
+app.use (express.json());
+
+
+// Routing middleware
+
+app.use("/api/users",userRouter)
+
 
 
 // Root Route
