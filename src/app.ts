@@ -1,5 +1,6 @@
 import express, { type Application, type Request, type Response } from "express";
 import { userRouter } from "./module/user/user.route";
+import { userInitDB } from "./db/userDB.init";
 
 const app:Application = express();
 
@@ -17,13 +18,22 @@ app.use("/api/users",userRouter)
 
 // Root Route
 
-app.get("/",(req:Request,res:Response)=>{
+app.get("/",async(req:Request,res:Response)=>{
 
-    res.status(200).json({
+    userInitDB()
+
+    try {
+
+        res.status(200).json({
         success: true,
-        message: "This is root route",
-        data:{}
+        message: "This is root route"
+       
     })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
 
 })
 
