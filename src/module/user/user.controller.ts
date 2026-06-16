@@ -36,17 +36,42 @@ const getAllUser = async(req:Request,res:Response)=>{
 
         })
 
-        
-
-
-        
+      
     } catch (error) {
         console.log(error);
     }
 
 }
 
+
+// get single users
+
+const singleUser = async(req:Request,res:Response)=>{
+
+    try {
+        const id = req.params.id;
+        const result = await userService.singleUserFromDB(id as string)
+
+        res.status(200).json({
+            success:true,
+            message:"single user created successfully",
+            data: result
+
+        })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+
+
+
+
+
 export const userController = {
     createUser,
-    getAllUser
+    getAllUser,
+    singleUser
 }
