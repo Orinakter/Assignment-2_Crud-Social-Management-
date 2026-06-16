@@ -5,3 +5,5 @@ export interface IUserBody{
     role?:string,
 
 }
+
+export type UserUpdateBody=Partial<IUserBody>

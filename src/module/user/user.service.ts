@@ -1,5 +1,6 @@
+import { asyncWrapProviders } from "node:async_hooks";
 import { pool } from "../../db/pool";
-import type { IUserBody } from "./user.interface"
+import type { IUserBody, UserUpdateBody } from "./user.interface"
 
 const userServiceIntoDB = async(body:IUserBody)=>{
 
@@ -45,7 +46,37 @@ const singleUserFromDB = async(id:string)=>{
         `,[id])
 
         return result.rows[0]
+}
 
+
+// update user
+
+const updateUserFromDB = async(body:UserUpdateBody,id:string)=>{
+    const {name,email,password,role} = body;
+    const result = await pool.query(`
+        UPDATE users
+        SET
+        name = COALESCE ($1, name),
+        email = COALESCE ($2, email),
+        password = COALESCE ($3, password),
+        role = COALESCE ($4, role)
+        WHERE id = $5
+        RETURNING *
+        `,[name,email,password,role,id])
+        
+        return result.rows[0]
+
+}
+
+//  deleteUserDB
+
+const deleteUserFromDB = async(id:string)=>{
+    const result = await pool.query (`
+        DELETE FROM users
+        WHERE id = $1
+        RETURNING *
+        `,[id])
+        return result.rows[0]
 
 }
 
@@ -54,5 +85,7 @@ const singleUserFromDB = async(id:string)=>{
 export const userService = {
     userServiceIntoDB,
     getAllUserFromDB,
-    singleUserFromDB
+    singleUserFromDB,
+    updateUserFromDB,
+    deleteUserFromDB
 }
