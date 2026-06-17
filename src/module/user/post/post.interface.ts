@@ -3,3 +3,5 @@ export interface IPostBody {
   title: string;
   content: string;
 }
+
+export type postUpdateBody=Partial<IPostBody>

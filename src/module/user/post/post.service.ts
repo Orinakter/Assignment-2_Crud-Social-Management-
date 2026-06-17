@@ -1,5 +1,5 @@
 import { pool } from "../../../db/pool"
-import type { IPostBody } from "./post.interface"
+import type { IPostBody, postUpdateBody } from "./post.interface"
 
 const createPostFromDB = async(body:IPostBody,id:string)=>{
     try {
@@ -38,7 +38,45 @@ const getAllPostFromDB = async()=>{
     
 }
 
+
+// get single post from DB
+
+const getSinglePostFromDB = async(id:string)=>{
+    const result = await pool.query(`
+        SELECT * FROM posts
+        WHERE id = $1
+        `,[id])
+
+        return result.rows[0]
+}
+
+
+// update post from post DB 
+
+const updatePostFromDB = async(body:postUpdateBody,id:string)=>{
+    const {user_id,title,content} = body;
+    const result = await pool.query(`
+        UPDATE posts
+        SET
+        user_id = COALESCE ($1, user_id),
+        title = COALESCE ($2, title),
+        content = COALESCE ($3, content)
+        WHERE id = $4
+        RETURNING *
+
+        `,[user_id,title,content,id])
+
+        return result.rows[0]
+
+
+
+}
+
+
+
 export const postService = {
     createPostFromDB,
-    getAllPostFromDB
+    getAllPostFromDB,
+    getSinglePostFromDB,
+    updatePostFromDB
 }

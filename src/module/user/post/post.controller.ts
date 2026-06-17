@@ -42,7 +42,54 @@ const getAllPost = async(req:Request,res:Response)=>{
 }
 
 
+// get single post
+
+const getSinglePost = async(req:Request,res:Response)=>{
+    try {
+        const id = req.params.id;
+        const result = await postService.getSinglePostFromDB(id as string);
+
+        res.status(200).json({
+            success : true,
+            message : "Get single posts",
+            data: result
+        })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+
+// updated post
+
+const updatePost = async(req:Request,res:Response)=>{
+    try {
+
+        const id = req.params.id;
+        const body = req.body;
+        const result = await postService.updatePostFromDB(body,id as string);
+
+        res.status(200).json({
+            success : true,
+            message : "updated post successfully",
+            data: result
+        })
+
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+
+}
+
+
 export const postController = {
     createPost,
-    getAllPost
+    getAllPost,
+    getSinglePost,
+    updatePost
 }
