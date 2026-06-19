@@ -86,10 +86,25 @@ const updatePost = async(req:Request,res:Response)=>{
 
 }
 
+// delete post
+
+const deletePost = async(req:Request,res:Response)=>{
+    const id = req.params.id;
+    const result = await postService.deletePostFromPosts(id as string);
+
+    res.status(200).json({
+            success : true,
+            message : "delete post successfully",
+            data: result
+        })
+
+}
+
 
 export const postController = {
     createPost,
     getAllPost,
     getSinglePost,
-    updatePost
+    updatePost,
+    deletePost
 }

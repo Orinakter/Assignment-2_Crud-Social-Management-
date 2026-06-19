@@ -1,6 +1,7 @@
 import { asyncWrapProviders } from "node:async_hooks";
 import { pool } from "../../db/pool";
 import type { IUserBody, UserUpdateBody } from "./user.interface"
+import bcrypt from "bcryptjs";
 
 const userServiceIntoDB = async(body:IUserBody)=>{
 
@@ -9,12 +10,17 @@ const userServiceIntoDB = async(body:IUserBody)=>{
         // post userDb
 
         const {name,email,password,role} = body;
+
+        
+    // hash password
+    const hashPassword = await bcrypt.hash(password,10);
+
         const result = await pool.query(`
             INSERT INTO users(name,email,password,role)
             VALUES($1,$2,$3,COALESCE($4,'user'))
             RETURNING *
 
-            `,[name,email,password,role])
+            `,[name,email,hashPassword,role])
 
             return result.rows[0]
            

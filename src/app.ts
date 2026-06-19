@@ -3,6 +3,7 @@ import { userRouter } from "./module/user/user.route";
 import { userInitDB } from "./db/userDB.init";
 import { postInitDB } from "./db/postDB.init";
 import { postRouter } from "./module/user/post/post.route";
+import { authRouter } from "./module/user/auth/auth.route";
 
 const app:Application = express();
 
@@ -16,6 +17,7 @@ app.use (express.json());
 
 app.use("/api/users",userRouter);
 app.use("/api/posts",postRouter);
+app.use("/api/auth",authRouter)
 
 
 
